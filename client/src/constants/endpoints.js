@@ -1,0 +1,14 @@
+export const BASE_API_PATH = process.env.REACT_APP_BASE_API_PATH;
+export const EVENTS_PATH = `${BASE_API_PATH}/api/v1/events`;
+export const GENRES_PATH = `${BASE_API_PATH}/api/v1/genres`;
+const AUTH_PATH = `${BASE_API_PATH}/api/v1/auth`;
+export const AUTH_REGISTER_PATH = `${AUTH_PATH}/register`;
+export const AUTH_LOGIN_PATH = `${AUTH_PATH}/login`;
+export const AUTH_LOGOUT_PATH = `${AUTH_PATH}/logout`;
+export const AUTH_REFRESH_TOKEN_PATH = `${AUTH_PATH}/refresh-token`;
+const USER_PATH = `${BASE_API_PATH}/api/v1/user`;
+export const USER_PROFILE_PATH = `${USER_PATH}/profile`;
+export const USER_CHANGE_PASSWORD_PATH = `${USER_PROFILE_PATH}/change-password`;
+export const USER_RECOMMENDATIONS_PATH = `${USER_PROFILE_PATH}/recommendations`;
+const RESERVATION_ENDPOINT = `${BASE_API_PATH}/api/v1/reservations`;
+export const BOOKING_ENDPOINT = `${RESERVATION_ENDPOINT}/book`;
