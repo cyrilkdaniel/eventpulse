@@ -42,7 +42,7 @@ const userSlice = createSlice({
         state.recommendations = action.payload.recommendations;
       })
       .addCase(getRecommendations.rejected, (state, action) => {
-        throw new Error(action.error);
+        return action.payload;
       });
   },
 });
@@ -67,14 +67,27 @@ export const updateProfileInfo = createAsyncThunk(
 
 export const getRecommendations = createAsyncThunk(
   "user/getRecommendations",
-  async ({ classificationId }) => {
-    let response;
-    response = await api.get(USER_RECOMMENDATIONS_PATH, {
-      params: {
-        classificationId,
-      },
-    });
-    return response.data;
+  async ({ classificationId }, { rejectWithValue }) => {
+    try {
+      const response = await api.get(USER_RECOMMENDATIONS_PATH, {
+        params: {
+          classificationId,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      if (error.response?.status === 429) {
+        return rejectWithValue({
+          message: error.response.data.message,
+          retryAfter: error.response.data.retryAfter,
+          isRateLimited: true,
+        });
+      }
+      return rejectWithValue({
+        message:
+          error.response?.data?.message || "Failed to fetch recommendations",
+      });
+    }
   }
 );
 

@@ -5,8 +5,6 @@ import { API_KEY, EVENTS_SEARCH_PATH } from "../config/config.js";
 // Fetch events dynamically via Ticketmaster API
 const fetchEventsViaApi = async (req, res) => {
   try {
-    // console.log(req.query);
-
     let EVENTS_PATH = EVENTS_SEARCH_PATH;
 
     if (req.query.queryParams) {
@@ -28,8 +26,6 @@ const fetchEventsViaApi = async (req, res) => {
             ...req.query,
           },
     });
-
-    // console.log(response.data._links);
 
     const { _links, page: paginationPage } = response.data;
 

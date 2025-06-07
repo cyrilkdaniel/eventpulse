@@ -19,11 +19,6 @@ import api from "../services/api";
 import { fetchEvents } from "../services/eventService";
 import { fetchRecommendations } from "../services/userService";
 
-// Background Image URL
-const backgroundImageUrl =
-  "https://images.unsplash.com/photo-1468234560893-89c00b6385c8?q=80&w=3872&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-
-// Styled MainSection with Background Image
 const MainSection = styled(Box)(({ theme }) => ({
   padding: theme.spacing(8, 2),
   textAlign: "center",
@@ -36,6 +31,7 @@ const Home = () => {
   const [status, setStatus] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [recommendationsError, setRecommendationsError] = useState(null);
 
   const [keyword, setKeyword] = useState("");
   const handleKeywordChange = (event) => {
@@ -76,7 +72,17 @@ const Home = () => {
   }, [dispatch, genres]);
 
   useEffect(() => {
-    if (isLoggedIn) fetchRecommendations(dispatch, user.interests);
+    const loadRecommendations = async () => {
+      if (isLoggedIn) {
+        try {
+          setRecommendationsError(null);
+          await fetchRecommendations(dispatch, user.interests);
+        } catch (error) {
+          setRecommendationsError(error);
+        }
+      }
+    };
+    loadRecommendations();
   }, [isLoggedIn, user?.interests, dispatch]);
 
   const onSearch = () => {
@@ -131,7 +137,7 @@ const Home = () => {
           </Container>
           {isLoggedIn && (
             <Container>
-              <Recommendations />
+              <Recommendations error={recommendationsError} />
             </Container>
           )}
         </Stack>

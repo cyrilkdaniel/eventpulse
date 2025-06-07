@@ -47,18 +47,16 @@ export const changePassword = async (passwordData) => {
 export const fetchRecommendations = async (dispatch, interests) => {
   try {
     let response;
-    const classificationId = interests.toString();
-    // genre === "" || genre == null
-    //   ? genreList.map((genre) => genre._id).toString()
-    //   : genre;
-    response = dispatch(
+    const classificationId = interests?.length > 0 ? interests.join(",") : "";
+    response = await dispatch(
       getRecommendations({
         classificationId,
       })
-    );
+    ).unwrap();
+
     return response.data; // Return the data from the response
   } catch (error) {
-    console.error("Failed to fetch events:", error);
-    throw error; // Propagate the error for further handling
+    console.error("Failed to fetch recommendations:", error);
+    throw error;
   }
 };

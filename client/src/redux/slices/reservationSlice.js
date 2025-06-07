@@ -17,7 +17,6 @@ const reservationSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getReservations.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.reservations = action.payload.reservations;
       })
       .addCase(getReservations.rejected, (state, action) => {

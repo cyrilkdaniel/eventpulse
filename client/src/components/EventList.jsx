@@ -8,21 +8,16 @@ import {
   Typography,
   Grid,
   Box,
-  CardActions,
-  IconButton,
   Button,
 } from "@mui/material";
 import EventsListPagination from "./EventListPagination";
 import { fetchEvents } from "../services/eventService";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import EventBusyIcon from "@mui/icons-material/EventBusy";
 
 const EventsList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const isLoggedIn = useSelector((state) => state.authReducer.isLoggedIn);
   const events = useSelector((state) => state.eventReducer.events);
-  // const events = [];
   const pagination = useSelector((state) => state.eventReducer.pagination);
   const page = useSelector((state) => state.eventReducer.page);
 
@@ -54,7 +49,6 @@ const EventsList = () => {
       pagination.next.split("?")[1]
     );
   const handleLast = () => {
-    console.log(pagination.last.split("?")[1]);
     fetchEvents(
       dispatch,
       null,
@@ -64,13 +58,6 @@ const EventsList = () => {
       pagination.last.split("?")[1]
     );
   };
-
-  // const onFavoriteClick = (id) => {
-  //   if (!isLoggedIn) {
-  //     navigate("/login"); // Redirect to login if not logged in
-  //     return;
-  //   }
-  // };
 
   return (
     <>
@@ -155,27 +142,6 @@ const EventsList = () => {
                         Date: {event.startDate.date}
                       </Typography>
                     </CardContent>
-                    {/* <CardActions
-                      disableSpacing
-                      sx={{
-                        position: "absolute",
-                        top: 8,
-                        right: 8,
-                        // Adjust spacing based on your design
-                      }}
-                    >
-                      <IconButton
-                        aria-label="add to favorites"
-                        onClick={(e) => {
-                          e.preventDefault(); // Prevent the default action (navigation)
-                          e.stopPropagation(); // Stop the event from propagating to the Card
-                          // console.log(event);
-                          onFavoriteClick(event.id); // Handle favorite click
-                        }}
-                      >
-                        <FavoriteBorderIcon color="primary" />
-                      </IconButton>
-                    </CardActions> */}
                   </Card>
                 </Link>
               </Grid>

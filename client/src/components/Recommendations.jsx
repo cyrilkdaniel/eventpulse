@@ -9,18 +9,26 @@ import {
   Grid,
   Box,
   Button,
-  IconButton,
+  Alert,
 } from "@mui/material";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
-const Recommendations = () => {
-  const recommendations = useSelector(
-    (state) => state.userReducer.recommendations
-  );
+const Recommendations = ({ error: propError }) => {
+  const { recommendations } = useSelector((state) => state.userReducer);
+
+  if (propError) {
+    return (
+      <Box sx={{ padding: 2, mt: 4 }}>
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {propError.message ||
+            "Failed to load recommendations. Please try again later."}
+        </Alert>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ padding: 2, mt: 4 }}>
-      {recommendations.length === 0 ? (
+      {recommendations && recommendations.length === 0 ? (
         <Box sx={{ textAlign: "center", mt: 4 }}>
           <Typography variant="h6" color="text.secondary" gutterBottom>
             We couldn't find any recommendations for you.
@@ -32,7 +40,7 @@ const Recommendations = () => {
             variant="contained"
             color="primary"
             component={Link}
-            to="/profile" // Replace with the appropriate route for setting interests
+            to="/profile"
           >
             Set Your Interests
           </Button>
@@ -94,21 +102,6 @@ const Recommendations = () => {
                         Date: {event.startDate.date}
                       </Typography>
                     </CardContent>
-                    <IconButton
-                      aria-label="add to favorites"
-                      sx={{
-                        position: "absolute",
-                        top: 8,
-                        right: 8,
-                      }}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        // Handle favorite click
-                      }}
-                    >
-                      <FavoriteBorderIcon color="primary" />
-                    </IconButton>
                   </Card>
                 </Link>
               </Grid>

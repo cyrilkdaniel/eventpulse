@@ -140,8 +140,22 @@ const getRecommendations = async (req, res) => {
     console.log({ message: "Recommendations found successfully" });
     return res.json(result);
   } catch (error) {
-    console.error("Error fetching recommendations:", error);
-    throw new Error("Failed to fetch recommendations");
+    if (error.response?.status === 429) {
+      // Rate limit exceeded
+      const retryAfter = error.response.headers["retry-after"] || 60; // Default to 60 seconds if not provided
+      return res.status(429).json({
+        message:
+          "Rate limit exceeded for fetching recommendations. Please try again later.",
+        retryAfter: parseInt(retryAfter),
+        recommendations: [], // Return empty recommendations to prevent frontend errors
+      });
+    }
+
+    // For other errors, return a generic error response
+    return res.status(error.response?.status || 500).json({
+      message: "Failed to fetch recommendations",
+      recommendations: [], // Return empty recommendations to prevent frontend errors
+    });
   }
 };
 
