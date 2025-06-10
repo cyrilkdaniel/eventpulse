@@ -6,9 +6,6 @@ import routes from "./routes/index.js"; // Import the centralized routes
 
 const app = express();
 
-// Connect to the database
-await connectDB();
-
 // Use CORS middleware
 app.use(
   cors({
@@ -22,10 +19,14 @@ app.use(express.json());
 // Use centralized routes
 app.use("/", routes);
 
-// Now you can use `db` in other parts of your application
-
-app.listen(PORT || 5000, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Only start the server if this file is run directly (not imported)
+if (process.env.NODE_ENV !== "test") {
+  // Connect to the database
+  connectDB().then(() => {
+    app.listen(PORT || 5000, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  });
+}
 
 export default app;
