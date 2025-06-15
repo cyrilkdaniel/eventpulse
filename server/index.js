@@ -9,7 +9,7 @@ const app = express();
 // Use CORS middleware
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "https://eventpulse-one.vercel.app"],
   })
 );
 
