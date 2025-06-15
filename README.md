@@ -159,7 +159,7 @@ Backend tests:
 
 ```bash
 cd server
-npm test
+npm run test
 ```
 
 ### Code Style
