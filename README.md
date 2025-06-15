@@ -151,8 +151,6 @@ The backend API provides the following endpoints:
 - `/api/events` - Event management routes
 - `/api/users` - User management routes
 
-For detailed API documentation, refer to the server README.
-
 ## Development
 
 ### Running Tests
